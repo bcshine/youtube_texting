@@ -226,9 +226,38 @@ with col2:
                             tab1, tab2 = st.tabs(["📄 전체 텍스트", "📝 요약 텍스트"])
                             
                             with tab1:
-                                st.markdown("**전체 추출된 텍스트:**")
+                                # 복사 버튼과 텍스트 영역
+                                col_copy1, col_text1 = st.columns([1, 4])
+                                
+                                with col_copy1:
+                                    if st.button("📋 전체 텍스트 복사", key="copy_full", type="secondary"):
+                                        # JavaScript로 클립보드에 복사 (안전한 방식)
+                                        import json
+                                        safe_text = json.dumps(extractor.formatted_text)
+                                        copy_js = f"""
+                                        <script>
+                                        const textToCopy = {safe_text};
+                                        navigator.clipboard.writeText(textToCopy).then(function() {{
+                                            alert('✅ 전체 텍스트가 클립보드에 복사되었습니다!');
+                                        }}, function(err) {{
+                                            // Fallback for older browsers
+                                            const textArea = document.createElement('textarea');
+                                            textArea.value = textToCopy;
+                                            document.body.appendChild(textArea);
+                                            textArea.select();
+                                            document.execCommand('copy');
+                                            document.body.removeChild(textArea);
+                                            alert('✅ 전체 텍스트가 클립보드에 복사되었습니다!');
+                                        }});
+                                        </script>
+                                        """
+                                        components.html(copy_js, height=0)
+                                
+                                with col_text1:
+                                    st.markdown("**전체 추출된 텍스트:**")
+                                
                                 st.text_area(
-                                    "전체 텍스트 (복사하려면 Ctrl+A 후 Ctrl+C를 누르세요)",
+                                    "전체 텍스트",
                                     extractor.formatted_text,
                                     height=300,
                                     label_visibility="collapsed"
@@ -239,9 +268,38 @@ with col2:
                                 st.info(f"📊 전체 {total_lines}줄의 텍스트가 추출되었습니다.")
                             
                             with tab2:
-                                st.markdown("**요약된 텍스트:**")
+                                # 복사 버튼과 텍스트 영역
+                                col_copy2, col_text2 = st.columns([1, 4])
+                                
+                                with col_copy2:
+                                    if st.button("📋 요약 텍스트 복사", key="copy_summary", type="secondary"):
+                                        # JavaScript로 클립보드에 복사 (안전한 방식)
+                                        import json
+                                        safe_summary = json.dumps(summary_text)
+                                        copy_js = f"""
+                                        <script>
+                                        const textToCopy = {safe_summary};
+                                        navigator.clipboard.writeText(textToCopy).then(function() {{
+                                            alert('✅ 요약 텍스트가 클립보드에 복사되었습니다!');
+                                        }}, function(err) {{
+                                            // Fallback for older browsers
+                                            const textArea = document.createElement('textarea');
+                                            textArea.value = textToCopy;
+                                            document.body.appendChild(textArea);
+                                            textArea.select();
+                                            document.execCommand('copy');
+                                            document.body.removeChild(textArea);
+                                            alert('✅ 요약 텍스트가 클립보드에 복사되었습니다!');
+                                        }});
+                                        </script>
+                                        """
+                                        components.html(copy_js, height=0)
+                                
+                                with col_text2:
+                                    st.markdown("**요약된 텍스트:**")
+                                
                                 st.text_area(
-                                    "요약 텍스트 (복사하려면 Ctrl+A 후 Ctrl+C를 누르세요)",
+                                    "요약 텍스트",
                                     summary_text,
                                     height=200,
                                     label_visibility="collapsed"
@@ -254,9 +312,10 @@ with col2:
                             st.markdown("---")
                             st.markdown("""
                             **💡 텍스트 복사 방법:**
-                            1. 위의 텍스트 박스를 클릭하세요
-                            2. **Ctrl+A** (전체 선택) → **Ctrl+C** (복사)
-                            3. 원하는 곳에 **Ctrl+V** (붙여넣기)
+                            
+                            **🖱️ 간편한 방법:** 위의 **"📋 복사"** 버튼을 클릭하세요!
+                            
+                            **⌨️ 수동 방법:** 텍스트 박스 클릭 → **Ctrl+A** (전체 선택) → **Ctrl+C** (복사)
                             """)
                             
                             # 추가 정보
