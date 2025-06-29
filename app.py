@@ -12,30 +12,94 @@ st.set_page_config(
 # 모바일 반응형 CSS
 st.markdown("""
 <style>
+    /* 모바일 전용 스타일 */
     @media only screen and (max-width: 768px) {
         .main .block-container {
-            padding-top: 1rem !important;
-            padding-left: 1rem !important;
-            padding-right: 1rem !important;
+            padding-top: 0.5rem !important;
+            padding-left: 0.5rem !important;
+            padding-right: 0.5rem !important;
+            padding-bottom: 1rem !important;
         }
+        
+        /* 제목 크기 조정 */
+        h1 {
+            font-size: 1.8rem !important;
+            line-height: 1.2 !important;
+            margin-bottom: 0.5rem !important;
+        }
+        
+        /* 부제목 크기 조정 */
+        .main .block-container p {
+            font-size: 0.9rem !important;
+            margin-bottom: 1rem !important;
+        }
+        
+        /* 섹션 제목 크기 조정 */
+        h3 {
+            font-size: 1.1rem !important;
+            margin-bottom: 0.5rem !important;
+            margin-top: 1rem !important;
+        }
+        
+        /* 버튼 스타일 */
         .stButton > button {
             width: 100% !important;
-            padding: 0.75rem !important;
-            font-size: 1rem !important;
+            padding: 0.75rem 1rem !important;
+            font-size: 0.9rem !important;
+            min-height: 44px !important;
+            margin-bottom: 0.5rem !important;
         }
+        
+        /* 입력 필드 */
         .stTextInput > div > div > input {
             font-size: 16px !important;
+            padding: 0.75rem !important;
         }
+        
+        /* 텍스트 영역 */
         .stTextArea textarea {
-            font-size: 14px !important;
+            font-size: 13px !important;
+            line-height: 1.4 !important;
+        }
+        
+        /* 체크박스 */
+        .stCheckbox {
+            font-size: 0.9rem !important;
+            margin-bottom: 1rem !important;
+        }
+        
+        /* 메트릭 */
+        [data-testid="metric-container"] {
+            font-size: 0.8rem !important;
+        }
+        
+        /* 일반 텍스트 크기 조정 */
+        .stMarkdown {
+            font-size: 0.9rem !important;
+        }
+        
+        /* 컬럼 간격 조정 */
+        .element-container {
+            margin-bottom: 0.5rem !important;
+        }
+    }
+    
+    /* 작은 모바일 화면 (375px 이하) */
+    @media only screen and (max-width: 375px) {
+        h1 {
+            font-size: 1.5rem !important;
+        }
+        
+        .stButton > button {
+            font-size: 0.85rem !important;
         }
     }
 </style>
 """, unsafe_allow_html=True)
 
 # 제목
-st.title("📺 유튜브 텍스트 추출기")
-st.markdown("유튜브 비디오의 자막을 추출하여 텍스트로 변환하는 도구입니다.")
+st.title("📺 YT 텍스트 추출기")
+st.markdown("유튜브 비디오의 자막을 텍스트로 변환합니다.")
 
 # URL 입력
 st.markdown("### 🔗 유튜브 URL 입력")
