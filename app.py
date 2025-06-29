@@ -94,9 +94,10 @@ with col2:
     # URL 입력
     st.markdown("### 🔗 유튜브 URL 입력")
     youtube_url = st.text_input(
-        "",
+        "유튜브 URL",
         placeholder="유튜브 URL을 입력하세요 (예: https://www.youtube.com/watch?v=example)",
-        help="유튜브 비디오의 URL을 입력하면 자막 또는 음성을 텍스트로 추출합니다."
+        help="유튜브 비디오의 URL을 입력하면 자막 또는 음성을 텍스트로 추출합니다.",
+        label_visibility="collapsed"
     )
     
     # 옵션 설정
@@ -140,9 +141,9 @@ with col2:
                     status_text.text("🎬 비디오 분석 중...")
                     progress_bar.progress(30)
                     
-                    result = extractor.process_youtube_url(youtube_url)
+                    result_file = extractor.process_youtube_url(youtube_url)
                     
-                    if result:
+                    if result_file:
                         progress_bar.progress(100)
                         status_text.text("✅ 추출 완료!")
                         
@@ -166,51 +167,77 @@ with col2:
                                     seconds = duration % 60
                                     st.write(f"**길이:** {minutes}분 {seconds}초")
                         
-                        # 추출된 텍스트 미리보기
+                        # 추출된 텍스트
                         if extractor.formatted_text:
-                            st.markdown("### 📄 추출된 텍스트 미리보기")
-                            
-                            # 텍스트를 줄바꿈으로 분할하여 처음 몇 줄만 표시
-                            preview_lines = extractor.formatted_text.split('\n')[:10]
-                            preview_text = '\n'.join(preview_lines)
-                            
-                            st.text_area(
-                                "미리보기 (처음 10줄)",
-                                preview_text,
-                                height=200,
-                                disabled=True
-                            )
-                            
-                            if len(preview_lines) < len(extractor.formatted_text.split('\n')):
-                                st.write("... (더 많은 내용이 있습니다)")
-                        
-                        # 다운로드 버튼들
-                        st.markdown("### 💾 파일 다운로드")
-                        
-                        col_dl1, col_dl2 = st.columns(2)
-                        
-                        # HTML 파일 다운로드
-                        if result and os.path.exists(result):
-                            with col_dl1:
-                                with open(result, 'r', encoding='utf-8') as f:
-                                    html_content = f.read()
+                            # 요약 텍스트 생성
+                            def create_summary(text):
+                                lines = text.split('\n')
+                                # 타임스탬프가 있는 줄들만 필터링
+                                timestamp_lines = [line for line in lines if '[' in line and ']' in line]
                                 
-                                st.download_button(
-                                    label="📄 HTML 파일 다운로드",
-                                    data=html_content,
-                                    file_name=os.path.basename(result),
-                                    mime="text/html"
+                                # 처음 5개와 마지막 5개 라인으로 요약
+                                if len(timestamp_lines) > 10:
+                                    summary_lines = timestamp_lines[:5] + ['...'] + timestamp_lines[-5:]
+                                else:
+                                    summary_lines = timestamp_lines
+                                
+                                return '\n'.join(summary_lines)
+                            
+                            summary_text = create_summary(extractor.formatted_text)
+                            
+                            st.markdown("### 📋 텍스트 복사")
+                            
+                            # 탭으로 전체 텍스트와 요약 텍스트 분리
+                            tab1, tab2 = st.tabs(["📄 전체 텍스트", "📝 요약 텍스트"])
+                            
+                            with tab1:
+                                st.markdown("**전체 추출된 텍스트:**")
+                                st.text_area(
+                                    "전체 텍스트 (복사하려면 Ctrl+A 후 Ctrl+C를 누르세요)",
+                                    extractor.formatted_text,
+                                    height=300,
+                                    label_visibility="collapsed"
                                 )
-                        
-                        # 텍스트 파일 다운로드
-                        if extractor.formatted_text:
-                            with col_dl2:
-                                st.download_button(
-                                    label="📝 텍스트 파일 다운로드", 
-                                    data=extractor.formatted_text,
-                                    file_name=f"{extractor.video_info.get('title', 'youtube_text').replace('/', '_')}.txt",
-                                    mime="text/plain"
+                                
+                                # 전체 텍스트 정보
+                                total_lines = len(extractor.formatted_text.split('\n'))
+                                st.info(f"📊 전체 {total_lines}줄의 텍스트가 추출되었습니다.")
+                            
+                            with tab2:
+                                st.markdown("**요약된 텍스트:**")
+                                st.text_area(
+                                    "요약 텍스트 (복사하려면 Ctrl+A 후 Ctrl+C를 누르세요)",
+                                    summary_text,
+                                    height=200,
+                                    label_visibility="collapsed"
                                 )
+                                
+                                # 요약 텍스트 설명
+                                st.info("📝 처음 5개와 마지막 5개 주요 구간을 요약했습니다.")
+                            
+                            # 복사 안내
+                            st.markdown("---")
+                            st.markdown("""
+                            **💡 텍스트 복사 방법:**
+                            1. 위의 텍스트 박스를 클릭하세요
+                            2. **Ctrl+A** (전체 선택) → **Ctrl+C** (복사)
+                            3. 원하는 곳에 **Ctrl+V** (붙여넣기)
+                            """)
+                            
+                            # 추가 정보
+                            st.markdown("### 📊 추출 정보")
+                            col_info1, col_info2, col_info3 = st.columns(3)
+                            
+                            with col_info1:
+                                st.metric("추출된 자막", f"{len(extractor.transcript_data)}개")
+                            
+                            with col_info2:
+                                text_length = len(extractor.formatted_text)
+                                st.metric("텍스트 길이", f"{text_length:,}자")
+                            
+                            with col_info3:
+                                word_count = len(extractor.formatted_text.split())
+                                st.metric("단어 수", f"{word_count:,}개")
                     
                     else:
                         st.error("❌ 텍스트 추출에 실패했습니다. 비디오가 비공개이거나 자막/음성을 추출할 수 없습니다.")
