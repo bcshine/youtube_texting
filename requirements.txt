@@ -4,4 +4,5 @@ beautifulsoup4>=4.12.0
 lxml>=4.9.0
 youtube-transcript-api>=0.6.0
 openai-whisper>=20231117
-ffmpeg-python>=0.2.0 
+ffmpeg-python>=0.2.0
+streamlit>=1.28.0 
