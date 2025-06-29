@@ -13,28 +13,38 @@
 - ✅ 아름다운 HTML 파일로 저장
 - ✅ 비디오 정보 (제목, 채널, 추출일시) 포함
 
-## 설치 방법
+## 빠른 시작 (Quick Start)
 
-1. **Python 설치 확인**
-   ```bash
-   python --version
-   ```
-   (Python 3.7 이상 필요)
+### 1단계: 프로젝트 다운로드
+```bash
+git clone https://github.com/YOUR_USERNAME/youtube-text-extractor.git
+cd youtube-text-extractor
+```
 
-2. **FFmpeg 설치** (음성 인식에 필요)
-   - **Windows**: [FFmpeg 다운로드](https://ffmpeg.org/download.html#build-windows)에서 다운로드 후 PATH에 추가
-   - **macOS**: `brew install ffmpeg`
-   - **Linux**: `sudo apt update && sudo apt install ffmpeg`
+### 2단계: Python 및 FFmpeg 설치 확인
+```bash
+python --version  # Python 3.7 이상 필요
+```
 
-3. **필요한 라이브러리 설치**
-   ```bash
-   pip install -r requirements.txt
-   ```
-   
-   또는 간편하게:
-   ```bash
-   install.bat  # Windows용 자동 설치
-   ```
+**FFmpeg 설치** (음성 인식에 필요):
+- **Windows**: [FFmpeg 다운로드](https://ffmpeg.org/download.html#build-windows)에서 다운로드 후 PATH에 추가
+- **macOS**: `brew install ffmpeg`
+- **Linux**: `sudo apt update && sudo apt install ffmpeg`
+
+### 3단계: 의존성 설치
+```bash
+pip install -r requirements.txt
+```
+
+또는 Windows 사용자는 간편하게:
+```bash
+install.bat  # Windows용 자동 설치 스크립트
+```
+
+### 4단계: 프로그램 실행
+```bash
+python youtube_text_extractor.py
+```
 
 ## 사용 방법
 
@@ -136,6 +146,30 @@ pip install -r requirements.txt
 - 주요 라이브러리: yt-dlp, youtube-transcript-api
 - 출력 형식: HTML (UTF-8 인코딩)
 
+## 기여하기 (Contributing)
+
+이 프로젝트에 기여하고 싶으시다면:
+
+1. 이 리포지토리를 Fork하세요
+2. 새로운 기능 브랜치를 생성하세요 (`git checkout -b feature/새기능`)
+3. 변경사항을 커밋하세요 (`git commit -am '새 기능 추가'`)
+4. 브랜치에 푸시하세요 (`git push origin feature/새기능`)
+5. Pull Request를 생성하세요
+
+## 라이센스
+
+이 프로젝트는 MIT 라이센스 하에 배포됩니다. 자세한 내용은 [LICENSE](LICENSE) 파일을 참조하세요.
+
+## 지원
+
+- 🐛 버그 리포트: [Issues](https://github.com/YOUR_USERNAME/youtube-text-extractor/issues)
+- 💡 기능 요청: [Issues](https://github.com/YOUR_USERNAME/youtube-text-extractor/issues)
+- 📧 문의: your.email@example.com
+
+## 스타 주세요! ⭐
+
+이 프로젝트가 도움이 되셨다면 ⭐ 스타를 눌러주세요!
+
 ---
 
-문제가 있거나 개선 사항이 있으면 언제든 알려주세요! 
+**문제가 있거나 개선 사항이 있으면 언제든 Issues에 등록해주세요!** 
