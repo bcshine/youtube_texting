@@ -15,32 +15,24 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# PWA 관련 HTML 헤드 추가
-pwa_html = """
-<head>
-    <link rel="manifest" href="/static/manifest.json">
-    <meta name="theme-color" content="#ff0000">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="YT텍스트">
-    <link rel="apple-touch-icon" href="/static/icon-192.png">
-    <meta name="mobile-web-app-capable" content="yes">
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/static/sw.js')
-                    .then(function(registration) {
-                        console.log('ServiceWorker registration successful');
-                    }, function(err) {
-                        console.log('ServiceWorker registration failed: ', err);
-                    });
-            });
+# 모바일 웹앱 메타 태그 추가
+components.html("""
+<meta name="theme-color" content="#ff0000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="YT텍스트">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<style>
+    /* 모바일 최적화 스타일 */
+    @media only screen and (max-width: 768px) {
+        .main .block-container {
+            padding-top: 1rem;
+            padding-bottom: 1rem;
         }
-    </script>
-</head>
-"""
-
-components.html(pwa_html, height=0)
+    }
+</style>
+""", height=0)
 
 # CSS 스타일링
 st.markdown("""
@@ -113,6 +105,21 @@ with st.sidebar:
     - `youtu.be/VIDEO_ID`  
     - `youtube.com/embed/VIDEO_ID`
     - `youtube.com/live/VIDEO_ID`
+    """)
+    
+    st.markdown("## 📱 모바일 바로가기 만들기")
+    st.markdown("""
+    **🍎 iOS (Safari)**
+    1. 공유 버튼 (⬆️) 터치
+    2. "홈 화면에 추가" 선택
+    3. 앱 이름 확인 후 "추가"
+    
+    **🤖 Android (Chrome)**
+    1. 메뉴 (⋮) → "홈 화면에 추가"
+    2. 또는 주소창의 "설치" 아이콘 터치
+    
+    **💻 PC (Chrome/Edge)**
+    1. 주소창 오른쪽 "앱 설치" 아이콘 클릭
     """)
 
 # 메인 컨텐츠
