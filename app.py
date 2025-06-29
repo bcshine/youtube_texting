@@ -5,6 +5,7 @@ import tempfile
 from datetime import datetime
 from youtube_text_extractor import YouTubeTextExtractor
 import base64
+import streamlit.components.v1 as components
 
 # 페이지 설정
 st.set_page_config(
@@ -13,6 +14,33 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
+# PWA 관련 HTML 헤드 추가
+pwa_html = """
+<head>
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#ff0000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="YT텍스트">
+    <link rel="apple-touch-icon" href="/static/icon-192.png">
+    <meta name="mobile-web-app-capable" content="yes">
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/static/sw.js')
+                    .then(function(registration) {
+                        console.log('ServiceWorker registration successful');
+                    }, function(err) {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
+    </script>
+</head>
+"""
+
+components.html(pwa_html, height=0)
 
 # CSS 스타일링
 st.markdown("""
