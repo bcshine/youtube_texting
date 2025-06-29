@@ -9,99 +9,212 @@ st.set_page_config(
     layout="centered"
 )
 
-# 모바일 반응형 CSS
+# 전체 디자인 CSS
 st.markdown("""
 <style>
-    /* 모바일 전용 스타일 */
+    /* 기본 스타일 리셋 */
+    .main .block-container {
+        max-width: 800px !important;
+        padding-top: 2rem !important;
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
+    }
+    
+    /* Streamlit 기본 요소 숨기기 */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    .stDeployButton {display: none;}
+    
+    /* 전체 배경 */
+    .stApp {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    /* 메인 컨테이너 카드 스타일 */
+    .main .block-container {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        margin: 2rem auto;
+        text-align: center;
+    }
+    
+    /* 제목 스타일 */
+    h1 {
+        background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-weight: bold !important;
+        margin-bottom: 1rem !important;
+        text-align: center;
+    }
+    
+    /* 부제목 스타일 */
+    .subtitle {
+        color: #666;
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+    
+    /* 섹션 제목 */
+    h3 {
+        color: #333;
+        margin-top: 2rem !important;
+        margin-bottom: 1rem !important;
+        font-weight: 600;
+    }
+    
+    /* 입력 필드 스타일 */
+    .stTextInput > div > div > input {
+        border-radius: 10px !important;
+        border: 2px solid #e1e5e9 !important;
+        padding: 12px 16px !important;
+        font-size: 16px !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    .stTextInput > div > div > input:focus {
+        border-color: #4ECDC4 !important;
+        box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.1) !important;
+    }
+    
+    /* 버튼 스타일 */
+    .stButton > button {
+        background: linear-gradient(45deg, #FF6B6B, #4ECDC4) !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 50px !important;
+        padding: 15px 30px !important;
+        font-weight: 600 !important;
+        font-size: 16px !important;
+        transition: all 0.3s ease !important;
+        width: 100% !important;
+        margin: 10px 0 !important;
+    }
+    
+    .stButton > button:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2) !important;
+    }
+    
+    /* 체크박스 스타일 */
+    .stCheckbox {
+        margin: 1rem 0 !important;
+        padding: 10px !important;
+        background: #f8f9fa;
+        border-radius: 10px;
+    }
+    
+    /* 텍스트 영역 스타일 */
+    .stTextArea textarea {
+        border-radius: 10px !important;
+        border: 2px solid #e1e5e9 !important;
+        font-family: 'Courier New', monospace !important;
+        line-height: 1.6 !important;
+    }
+    
+    /* 성공 메시지 스타일 */
+    .stSuccess {
+        background: linear-gradient(45deg, #4ECDC4, #44A08D) !important;
+        color: white !important;
+        border-radius: 10px !important;
+        text-align: center !important;
+    }
+    
+    /* 정보 메시지 스타일 */
+    .stInfo {
+        background: linear-gradient(45deg, #667eea, #764ba2) !important;
+        color: white !important;
+        border-radius: 10px !important;
+        text-align: center !important;
+    }
+    
+    /* 메트릭 카드 스타일 */
+    [data-testid="metric-container"] {
+        background: linear-gradient(45deg, #f093fb, #f5576c);
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    
+    [data-testid="metric-container"] > div {
+        color: white !important;
+    }
+    
+    /* 에러 메시지 스타일 */
+    .stAlert > div {
+        border-radius: 10px !important;
+        border: none !important;
+    }
+    
+    /* 경고 메시지 스타일 */
+    .stWarning > div {
+        background: linear-gradient(45deg, #ffeaa7, #fab1a0) !important;
+        color: #2d3436 !important;
+        border-radius: 10px !important;
+    }
+    
+    /* 에러 메시지 스타일 */
+    .stError > div {
+        background: linear-gradient(45deg, #fd79a8, #e84393) !important;
+        color: white !important;
+        border-radius: 10px !important;
+    }
+    
+    /* 코드 스타일 */
+    code {
+        background: rgba(255,255,255,0.8) !important;
+        color: #333 !important;
+        padding: 2px 6px !important;
+        border-radius: 4px !important;
+        font-weight: 500 !important;
+    }
+    
+    /* 모바일 반응형 */
     @media only screen and (max-width: 768px) {
         .main .block-container {
-            padding-top: 0.5rem !important;
-            padding-left: 0.5rem !important;
-            padding-right: 0.5rem !important;
-            padding-bottom: 1rem !important;
+            margin: 1rem auto !important;
+            padding: 1.5rem !important;
+            border-radius: 15px !important;
         }
         
-        /* 제목 크기 조정 */
         h1 {
-            font-size: 1.8rem !important;
-            line-height: 1.2 !important;
-            margin-bottom: 0.5rem !important;
+            font-size: 2rem !important;
         }
         
-        /* 부제목 크기 조정 */
-        .main .block-container p {
-            font-size: 0.9rem !important;
-            margin-bottom: 1rem !important;
-        }
-        
-        /* 섹션 제목 크기 조정 */
-        h3 {
-            font-size: 1.1rem !important;
-            margin-bottom: 0.5rem !important;
-            margin-top: 1rem !important;
-        }
-        
-        /* 버튼 스타일 */
         .stButton > button {
-            width: 100% !important;
-            padding: 0.75rem 1rem !important;
-            font-size: 0.9rem !important;
-            min-height: 44px !important;
-            margin-bottom: 0.5rem !important;
+            padding: 12px 20px !important;
+            font-size: 14px !important;
         }
         
-        /* 입력 필드 */
         .stTextInput > div > div > input {
             font-size: 16px !important;
-            padding: 0.75rem !important;
-        }
-        
-        /* 텍스트 영역 */
-        .stTextArea textarea {
-            font-size: 13px !important;
-            line-height: 1.4 !important;
-        }
-        
-        /* 체크박스 */
-        .stCheckbox {
-            font-size: 0.9rem !important;
-            margin-bottom: 1rem !important;
-        }
-        
-        /* 메트릭 */
-        [data-testid="metric-container"] {
-            font-size: 0.8rem !important;
-        }
-        
-        /* 일반 텍스트 크기 조정 */
-        .stMarkdown {
-            font-size: 0.9rem !important;
-        }
-        
-        /* 컬럼 간격 조정 */
-        .element-container {
-            margin-bottom: 0.5rem !important;
+            padding: 10px 14px !important;
         }
     }
     
-    /* 작은 모바일 화면 (375px 이하) */
-    @media only screen and (max-width: 375px) {
-        h1 {
-            font-size: 1.5rem !important;
+    @media only screen and (max-width: 480px) {
+        .main .block-container {
+            margin: 0.5rem !important;
+            padding: 1rem !important;
         }
         
-        .stButton > button {
-            font-size: 0.85rem !important;
+        h1 {
+            font-size: 1.8rem !important;
         }
     }
 </style>
 """, unsafe_allow_html=True)
 
-# 제목
-st.title("📺 YT 텍스트 추출기")
-st.markdown("유튜브 비디오의 자막을 텍스트로 변환합니다.")
-
-# URL 입력
+# 제목과 설명
+st.title("📺 YouTube Text Extractor")
+st.markdown('<div class="subtitle">🎬 유튜브 영상의 자막과 음성을 텍스트로 쉽게 변환하세요</div>', unsafe_allow_html=True)
+# URL 입력 섹션
 st.markdown("### 🔗 유튜브 URL 입력")
 youtube_url = st.text_input(
     "URL",
@@ -175,20 +288,33 @@ if st.button("📥 텍스트 추출하기", type="primary"):
 st.markdown("---")
 st.markdown("### 💡 사용 방법")
 st.markdown("""
-1. **유튜브 URL 입력**: 추출하고 싶은 유튜브 비디오 URL을 붙여넣기하세요
-2. **옵션 선택**: 자막이 없는 경우 음성 인식을 사용할지 선택하세요
-3. **추출 실행**: "텍스트 추출하기" 버튼을 클릭하세요
-4. **결과 복사**: 추출된 텍스트를 선택하고 복사하세요
-""")
+<div style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); padding: 20px; border-radius: 15px; margin: 10px 0;">
+<b>📝 쉬운 4단계 사용법</b><br><br>
+<b>1️⃣ URL 입력</b>: 추출하고 싶은 유튜브 비디오 URL을 붙여넣기하세요<br>
+<b>2️⃣ 옵션 선택</b>: 자막이 없는 경우 음성 인식을 사용할지 선택하세요<br>
+<b>3️⃣ 추출 실행</b>: "텍스트 추출하기" 버튼을 클릭하세요<br>
+<b>4️⃣ 결과 복사</b>: 추출된 텍스트를 선택하고 복사하세요
+</div>
+""", unsafe_allow_html=True)
 
 st.markdown("### 📌 지원 형식")
 st.markdown("""
-- `youtube.com/watch?v=VIDEO_ID`
-- `youtu.be/VIDEO_ID`  
-- `youtube.com/embed/VIDEO_ID`
-- `youtube.com/live/VIDEO_ID`
-""")
+<div style="background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%); padding: 15px; border-radius: 15px; margin: 10px 0; font-family: monospace;">
+✅ <code>youtube.com/watch?v=VIDEO_ID</code><br>
+✅ <code>youtu.be/VIDEO_ID</code><br>
+✅ <code>youtube.com/embed/VIDEO_ID</code><br>
+✅ <code>youtube.com/live/VIDEO_ID</code>
+</div>
+""", unsafe_allow_html=True)
 
 # 푸터
-st.markdown("---")
-st.markdown("Made with ❤️ by YouTube Text Extractor") 
+st.markdown("""
+<div style="text-align: center; padding: 30px 0; margin-top: 40px; border-top: 2px solid #e1e5e9;">
+<div style="background: linear-gradient(45deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: bold; font-size: 18px;">
+✨ Made with ❤️ by YouTube Text Extractor ✨
+</div>
+<div style="color: #888; margin-top: 10px; font-size: 14px;">
+🚀 빠르고 정확한 유튜브 텍스트 추출 서비스
+</div>
+</div>
+""", unsafe_allow_html=True) 
